@@ -10,9 +10,17 @@ jobs:
 
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build docker image from the php application
-      run: docker build . --file Dockerfile --tag phpauth:$(date +%s)
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build the docker image
+      run: docker build . --file Dockerfile -t phpauth:$(date +%s)
+    - name: Docker push
+      run: docker push ${{secrets.DOCKER_USER}}/phpauth
