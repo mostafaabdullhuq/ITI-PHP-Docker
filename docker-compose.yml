@@ -1,7 +1,7 @@
 version: "1.0"
 services:
   phpdockerweb:
-    image: "php:apache"
+    image: "dockerlab:latest"
     ports:
       - "8089:80"
     volumes:
